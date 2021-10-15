@@ -1,12 +1,26 @@
-const styleButton = document.createElement("style");
-const buttonStyle = `
+const style = document.createElement("style");
+const stylePopulate = document.createElement("style");
+
+const styles = `
 button {
-    padding: .5em;
-    margin: 3px;
+    margin: 8px;
+    width: auto;
+    padding: 2px 12px 2px 12px;
+    border-radius: 5px;
+    outline: none;
+    border: .5px solid gray;
+}
+.populate {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin:8px;
 }
 `;
-styleButton.innerHTML = buttonStyle;
-document.head.appendChild(styleButton);
+
+style.innerHTML = styles;
+
+document.head.appendChild(style);
 
 class Paginate {
     constructor(state, dataPerPage) {
@@ -63,12 +77,18 @@ class Paginate {
             }
             maxRight = pages;
         }
-        for (let page = maxLeft; page <= maxRight; page++) {
-            wrapper.innerHTML += `<button value=${page} class="page">${page}</button>`;
+
+        if (pages > 1) {
+            for (let page = maxLeft; page <= maxRight; page++) {
+                wrapper.innerHTML += `<button value=${page} class="page">${page}</button>`;
+            }
         }
 
         //set color to the selected page button
-        document.querySelector(`button[value=\'${this.getPage}\']`).style.background = "rgb(144,238,144)";
+        const currentPage = document.querySelector(`button[value=\'${this.getPage}\']`)
+        if (currentPage) {
+            currentPage.style.background = "rgb(144,238,144)";
+        }
 
         if (this.getPage != 1) {
             wrapper.innerHTML = `<button value=${1} class="page">&#171; First</button>` + wrapper.innerHTML;
@@ -96,7 +116,17 @@ class Paginate {
     }
 }
 
-const paginate = new Paginate(data, 9);
+const paginate = new Paginate(data, 5);
+
+const populate = document.querySelector(".populate");
+
+const initial = paginate.groupDataInPages();
+
+initial.querySet.forEach((data) => {
+    const div = document.createElement("div");
+    div.innerText = data.text;
+    populate.appendChild(div);
+})
 
 const buttons = document.querySelector(".buttons");
 
@@ -104,6 +134,14 @@ paginate.paginate(buttons);
 
 paginate.registerListener((function(value) {
     // console.log(`Data changed ${value}`);
+
     const datum = paginate.groupDataInPages();
-    console.log(datum);
+
+    populate.innerHTML = ``;
+
+    datum.querySet.forEach((data) => {
+        const div = document.createElement("div");
+        div.innerText = data.text;
+        populate.appendChild(div);
+    })
 }));
