@@ -1,5 +1,4 @@
 const style = document.createElement("style");
-const stylePopulate = document.createElement("style");
 
 const styles = `
 button {
