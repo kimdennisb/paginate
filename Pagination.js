@@ -96,7 +96,7 @@ class Paginate {
     }
 }
 
-const paginate = new Paginate(data, 3);
+const paginate = new Paginate(data, 9);
 
 const buttons = document.querySelector(".buttons");
 
