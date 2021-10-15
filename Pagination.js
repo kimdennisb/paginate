@@ -116,7 +116,7 @@ class Paginate {
     }
 }
 
-const paginate = new Paginate(data, 3);
+const paginate = new Paginate(data, 5);
 
 const populate = document.querySelector(".populate");
 
